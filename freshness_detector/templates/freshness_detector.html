@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,24 +6,33 @@
     <title>Freshness Detector</title>
     <style>
         body {
-            background-color: white;
+            background-image: url("{% static 'images/fruit-veg-bg.png' %}");
+            background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+            color: white;
             font-family: Arial, sans-serif;
         }
         .container {
-            width: 50%;
+            width: 90%;
             margin: 0 auto;
+            margin-top: 10px;
             text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
         }
         header {
             background-color: #26a541;
             color: white;
-            padding: 1em;
             border-radius: 5px;
-            margin-bottom: 1em;
             width: 100%;
-            height: 50px;
+            height: 40px;
             text-align: center;
-            line-height: 50px;
+            margin-bottom: 40px;
+            line-height: 40px;
         }
         .upload-btn-wrapper {
             position: relative;
@@ -37,6 +47,7 @@
             cursor: pointer;
             border: none;
             font-size: 16px;
+            margin-right: 10px;
         }
         .upload-btn-wrapper input[type=file] {
             font-size: 100px;
@@ -63,6 +74,31 @@
         }
         .results {
             margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .results img {
+            max-width: 50%;
+            border-radius: 10px;
+        }
+        .result-details {
+            margin-left: 20px;
+            text-align: left;
+        }
+        .result-details h2 {
+            margin-top: 0;
+        }
+        .result-details p {
+            margin: 5px 0;
+        }
+        .result-details label {
+            color: #26a541;
+        }
+        .row{
+        display: flex;
+  align-items: center;
+  justify-content: center;
         }
     </style>
     <script>
@@ -78,27 +114,29 @@
 <body>
     <div class="container">
         <header>
-            <h1>Freshness Detector</h1>
+            <h3>Freshness Detector</h3>
         </header>
         <form method="post" enctype="multipart/form-data" onsubmit="showLoading()">
             {% csrf_token %}
+            <div align="center" class="row">
             <div class="upload-btn-wrapper">
                 <button class="btn">Upload an image</button>
                 <input type="file" name="image" accept="image/*" required onchange="showFileName(this)">
             </div>
+                <button type="submit" class="btn">Predict Freshness</button>
             <p id="file-name"></p>
-            <br><br>
-            <button type="submit" class="btn">Predict Freshness</button>
+</div>
         </form>
         <div id="loading" class="loading"></div>
         {% if image_uploaded %}
             <div class="results">
-                <h2>Results:</h2>
-                <p><strong>Predicted Class:</strong> {{ predicted_class }}</p>
-                <p><strong>Confidence Score:</strong> {{ confidence_score }}</p>
-                <p><strong>Time Taken:</strong> {{ time_taken }} seconds</p>
-                <p><strong>Uploaded Image:</strong></p>
-                <img src="{{ uploaded_image_url }}" alt="Uploaded Image" style="max-width: 100%;">
+                <img src="{{ uploaded_image_url }}" alt="Uploaded Image">
+                <div class="result-details">
+                    <h2>Results:</h2>
+                    <p><label>Predicted Class:</label> {{ predicted_class }}</p>
+                    <p><label>Confidence Score:</label> {{ confidence_score }}</p>
+                    <p><label>Time Taken:</label> {{ time_taken }} seconds</p>
+                </div>
             </div>
         {% endif %}
     </div>
