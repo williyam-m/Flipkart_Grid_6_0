@@ -6,3 +6,6 @@ __pycache__/
 .idea
 
 venv
+
+# ML Model
+fruit_veg_freshness_model.h5
