@@ -65,3 +65,8 @@ def freshness_detector(request):
         return render(request, 'freshness_detector.html', context)
 
     return render(request, 'freshness_detector.html')
+
+
+def history(request):
+    predictions = FreshnessPrediction.objects.all().order_by('-uploaded_at')
+    return render(request, 'freshness_detector_history.html', {'predictions': predictions})
