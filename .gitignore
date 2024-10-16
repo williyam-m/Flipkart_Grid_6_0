@@ -7,5 +7,8 @@ __pycache__/
 
 venv
 
+
+uploads
+
 # ML Model
 # fruit_veg_freshness_model.h5
