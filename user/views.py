@@ -9,13 +9,6 @@ import re
 # Create your views here.
 
 
-
-
-
-@login_required(login_url='signin')
-def home(request):
-    return HttpResponse("Hello, " + request.user.username)
-
 def is_username_valid(username):
     username_pattern = re.compile(r'^[a-zA-Z0-9._-]+$')
     if username_pattern.match(username):

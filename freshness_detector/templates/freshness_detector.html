@@ -2,8 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>Freshness Detector</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
             background-image: url("{% static 'images/fruit-veg-bg.png' %}");
@@ -128,7 +130,7 @@
         <header>
             <h3>Freshness Detector</h3>
         </header>
-        <div align="left"><button class="btn min"><a href="/">Home</a></button></div>
+        <div align="left"><a href="/"><i class="fa fa-arrow-left"></i> Home</a></div>
         <div align="right"><button class="btn min"><a href="history">History</a></button></div>
         <form method="post" enctype="multipart/form-data" onsubmit="showLoading()">
             {% csrf_token %}
