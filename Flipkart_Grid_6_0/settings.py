@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'freshness_detector',
     'image_preprocessor',
     'OCR',
+    'feature_extractor',
 ]
 
 MIDDLEWARE = [
