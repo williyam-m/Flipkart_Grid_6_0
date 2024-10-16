@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'dashboard',
     'freshness_detector',
     'image_preprocessor',
+    'OCR',
 ]
 
 MIDDLEWARE = [
