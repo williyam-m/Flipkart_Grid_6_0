@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.conf import settings
+from .models import *
 from OCR.views import *
 from image_preprocessor.views import *
 import os
@@ -105,7 +106,15 @@ def feature_extractor(request):
         #text = "USE BY 07 MAR 2029 4067991709876 10:49 MRP: Rs. 299.00 Manufactured: 07/03/2023 Best before 18 months"
         extractor = ProductInfoExtractor(text)
         info = extractor.extract_all_info()
-        print(info)
+
+        feature_extract = FeatureExtract.objects.create(
+            image='uploads/' + uploaded_image.name,
+            EAN = info.get("EAN"),
+            MRP = info.get("MRP"),
+            manufactured_date = info.get("manufactured_date"),
+            expiry_date = info.get("expiry_date"),
+            is_valid = info.get("is_valid")
+        )
 
 
         context = {
@@ -116,7 +125,8 @@ def feature_extractor(request):
             'expiry_date': info.get("expiry_date"),
             'is_valid': info.get("is_valid"),
             'image_uploaded': True,
-            'uploaded_image_name': uploaded_image.name
+            'uploaded_image_name': uploaded_image.name,
+            'uploaded_image_url': feature_extract.image.url
         }
 
         return render(request, 'feature_extractor.html', context)
