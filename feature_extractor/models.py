@@ -11,8 +11,8 @@ class FeatureExtract(models.Model):
     is_valid = models.BooleanField(default=False)
     text = models.TextField(blank=True, null=True)
     image_uploaded = models.BooleanField(default=False)
-
     uploaded_image_name = models.CharField(max_length=255, blank=True, null=True)
 
+    uploaded_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     def __str__(self):
         return f'FeatureExtract {self.id}'

@@ -132,3 +132,9 @@ def feature_extractor(request):
         return render(request, 'feature_extractor.html', context)
 
     return render(request, 'feature_extractor.html')
+
+
+
+def history(request):
+    feature_extracts = FeatureExtract.objects.all().order_by('-uploaded_at')
+    return render(request, 'feature_extractor_history.html', {'feature_extracts': feature_extracts})
