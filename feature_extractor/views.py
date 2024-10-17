@@ -17,8 +17,10 @@ class ProductInfoExtractor:
         return match.group(0) if match else None
 
     def extract_MRP(self):
-        match = re.search(r'\bMRP[:\s]*Rs[.\s]*\d+\.?\d*\b', self.text, re.IGNORECASE)
-        return match.group(0) if match else None
+        match = re.search(r'(?i)\bMRP[:\s]*Rs[.\s]*(\d+\.?\d*)\b|\bRs[.\s]*(\d+\.?\d*)\b', self.text, re.IGNORECASE)
+        if match:
+            return match.group(1) or match.group(2)
+        return None
 
     def extract_dates(self):
         date_patterns = [
@@ -55,8 +57,8 @@ class ProductInfoExtractor:
         return expiry_date > self.today if expiry_date else None
 
     def extract_all_info(self):
-        ean = self.extract_EAN()
-        mrp = self.extract_MRP()
+        EAN = self.extract_EAN()
+        MRP = self.extract_MRP()
         dates = self.extract_dates()
 
         manufactured_date = None
@@ -75,11 +77,11 @@ class ProductInfoExtractor:
         validity = self.is_valid(expiry_date)
 
         return {
-            'EAN': ean,
-            'MRP': mrp,
-            'Manufactured Date': manufactured_date,
-            'Expiry Date': expiry_date,
-            'Is Valid': validity
+            'EAN': EAN,
+            'MRP': MRP,
+            'manufactured_date': manufactured_date,
+            'expiry_date': expiry_date,
+            'is_valid': validity
         }
 
 
@@ -100,7 +102,7 @@ def feature_extractor(request):
         preprocessed_image = preprocess_image(image_path)
         text = extract_text_from_image(preprocessed_image)
 
-        # "USE BY 07 MAR 2029 40679917TKG 10:49 MRP: Rs. 299.00 Manufactured: 07/03/2023 Best before 18 months"
+        #text = "USE BY 07 MAR 2029 4067991709876 10:49 MRP: Rs. 299.00 Manufactured: 07/03/2023 Best before 18 months"
         extractor = ProductInfoExtractor(text)
         info = extractor.extract_all_info()
         print(info)
@@ -108,11 +110,11 @@ def feature_extractor(request):
 
         context = {
             'text': text,
-            'EAN': info.get("ean"),
-            'MRP': info.get("mrp"),
-            'Manufactured Date': info.get("manufactured_date"),
-            'Expiry Date': info.get("expiry_date"),
-            'Is Valid': info.get("validity"),
+            'EAN': info.get("EAN"),
+            'MRP': info.get("MRP"),
+            'manufactured_date': info.get("manufactured_date"),
+            'expiry_date': info.get("expiry_date"),
+            'is_valid': info.get("is_valid"),
             'image_uploaded': True,
             'uploaded_image_name': uploaded_image.name
         }
