@@ -103,7 +103,7 @@ def feature_extractor(request):
         preprocessed_image = preprocess_image(image_path)
         text = extract_text_from_image(preprocessed_image)
 
-        #text = "USE BY 07 MAR 2029 4067991709876 10:49 MRP: Rs. 299.00 Manufactured: 07/03/2023 Best before 18 months"
+
         extractor = ProductInfoExtractor(text)
         info = extractor.extract_all_info()
 

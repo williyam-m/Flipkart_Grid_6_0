@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 import os
+from .models import *
 from image_preprocessor.views import *
 import tensorflow as tf
 import tensorflow_hub as hub
@@ -65,12 +66,18 @@ def object_detection(request):
 
         object_count = count_objects(image_path)
 
-        print(f'Number of objects detected: {object_count}')
+        object_detect = ObjectDetect.objects.create(
+            image='uploads/' + uploaded_image.name,
+            object_count = object_count
+        )
 
         context = {
             'object_count': object_count,
             'image_uploaded': True,
+            'uploaded_image_name': uploaded_image.name,
+            'uploaded_image_url': object_detect.image.url
         }
+
         return render(request, 'object_detection.html', context)
 
     return render(request, 'object_detection.html')
