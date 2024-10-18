@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'image_preprocessor',
     'OCR',
     'feature_extractor',
+    'object_detection',
 ]
 
 MIDDLEWARE = [
@@ -130,6 +131,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'dashboard', 'static'),
     os.path.join(BASE_DIR, 'freshness_detector', 'static'),
     os.path.join(BASE_DIR, 'feature_extractor', 'static'),
+    os.path.join(BASE_DIR, 'object_detection', 'static'),
 ]
 
 

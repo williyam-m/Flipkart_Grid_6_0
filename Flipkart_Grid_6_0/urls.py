@@ -26,6 +26,7 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('fresh_detect/', include('freshness_detector.urls')),
     path('feat_extract/', include('feature_extractor.urls')),
+    path('object_detect/', include('object_detection.urls')),
 ]
 urlpatterns = urlpatterns+static(settings.MEDIA_URL,
 document_root=settings.MEDIA_ROOT)
