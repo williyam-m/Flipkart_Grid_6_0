@@ -16,7 +16,7 @@ detector = hub.load(model_url)
 
 
 # Function to count objects in an image
-def count_objects(image_path, output_path, confidence_threshold=0.5):
+def count_objects(image_path, confidence_threshold=0.5):
 
     original_image, input_image = load_image(image_path)
     input_tensor = tf.convert_to_tensor(input_image, dtype=tf.uint8)
@@ -46,15 +46,31 @@ def count_objects(image_path, output_path, confidence_threshold=0.5):
 
     # Convert the image back to BGR before saving
     original_image_bgr = cv2.cvtColor(original_image, cv2.COLOR_RGB2BGR)
-    cv2.imwrite(output_path, original_image_bgr)  # Save the image
+    cv2.imwrite(image_path, original_image_bgr)  # Save the image
 
     return object_count
 
 # Example usage
 def object_detection(request):
-    image_path = os.path.join(settings.BASE_DIR, 'freshness_detector', 'static', 'images', 'fruit-veg-bg.png')
-    output_path = os.path.join(settings.BASE_DIR, 'freshness_detector', 'static', 'images', 'fruit-veg-bg-detected.png')
 
-    object_count = count_objects(image_path, output_path)
-    print(f'Number of objects detected: {object_count}')
-    return render(request, 'object_detection.html', {'output_image': 'static/images/fruit-veg-bg-detected.png'})
+    if request.method == 'POST' and request.FILES.get('image'):
+        uploaded_image = request.FILES['image']
+        image_path = os.path.join(settings.MEDIA_ROOT, 'uploads', uploaded_image.name)
+
+        with open(image_path, 'wb+') as destination:
+            for chunk in uploaded_image.chunks():
+                destination.write(chunk)
+
+
+
+        object_count = count_objects(image_path)
+
+        print(f'Number of objects detected: {object_count}')
+
+        context = {
+            'object_count': object_count,
+            'image_uploaded': True,
+        }
+        return render(request, 'object_detection.html', context)
+
+    return render(request, 'object_detection.html')

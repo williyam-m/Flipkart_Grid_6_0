@@ -1,10 +1,158 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>object_detection</title>
+    <title>Object Detection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            background-image: url("{% static 'images/fruit-veg-bg.png' %}");
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            margin-top: 10px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        header {
+            background-color: #26a541;
+            color: white;
+            border-radius: 5px;
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+        }
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .btn {
+            background-color: #26a541;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .loading {
+            display: none;
+            position: relative;
+            margin: 20px auto;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #26a541;
+            border-radius: 50%;
+            border-top: 4px solid transparent;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .results {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .results img {
+            max-width: 50%;
+            border-radius: 10px;
+        }
+        .result-details {
+            margin-left: 20px;
+            text-align: left;
+        }
+        .result-details h2 {
+            margin-top: 0;
+        }
+        .result-details p {
+            margin: 5px 0;
+        }
+        .result-details label {
+            color: #26a541;
+        }
+        .row{
+        display: flex;
+  align-items: center;
+  justify-content: center;
+        }
+        a{
+        color:white;
+        text-decoration:none;
+        }
+        .min {
+        background-color: rgba(0, 0, 0, 0.5);
+            border: 2px solid #26a541;
+            padding: 5px 20px;
+        }
+        .min:hover{
+        color: white;
+            background-color: #26a541;
+        }
+    </style>
+    <script>
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+        function showFileName(input) {
+            const fileName = input.files[0].name;
+            document.getElementById('file-name').innerText = 'Selected file: ' + fileName;
+        }
+    </script>
 </head>
 <body>
-
+    <div class="container">
+        <header>
+            <h3>Object Detection</h3>
+        </header>
+        <div align="left"><a href="/"><i class="fa fa-arrow-left"></i> Home</a></div>
+        <div align="right"><button class="btn min"><a href="history">History</a></button></div>
+        <form method="post" enctype="multipart/form-data" onsubmit="showLoading()">
+            {% csrf_token %}
+            <div align="center" class="row">
+            <div class="upload-btn-wrapper">
+                <button class="btn">Upload an image</button>
+                <input type="file" name="image" accept="image/*" required onchange="showFileName(this)">
+            </div>
+                <button type="submit" class="btn">Detect Object</button>
+            <p id="file-name"></p>
+           </div>
+        </form>
+        <div id="loading" class="loading"></div>
+        {% if image_uploaded %}
+            <div class="results">
+                <img src="{{ uploaded_image_url }}" alt="Uploaded Image">
+                <div class="result-details">
+                    <h2>Results:</h2>
+                    <p><label>Object Count:</label> {{ object_count }}</p>
+                    </div>
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
