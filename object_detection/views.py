@@ -81,3 +81,10 @@ def object_detection(request):
         return render(request, 'object_detection.html', context)
 
     return render(request, 'object_detection.html')
+
+
+
+def history(request):
+
+    object_detections = ObjectDetect.objects.all().order_by('-uploaded_at')
+    return render(request, 'object_detection_history.html', {'object_detections': object_detections})
