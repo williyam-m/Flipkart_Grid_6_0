@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 import os
 from .models import *
@@ -88,3 +88,16 @@ def history(request):
 
     object_detections = ObjectDetect.objects.all().order_by('-uploaded_at')
     return render(request, 'object_detection_history.html', {'object_detections': object_detections})
+
+
+
+def delete(request, pk):
+    object_detect = ObjectDetect.objects.get(id=pk)
+
+    if object_detect.image and len(object_detect.image) > 0:
+        if os.path.exists(object_detect.image.path):
+            os.remove(object_detect.image.path)
+
+    object_detect.delete()
+
+    return redirect('object_detection_history')

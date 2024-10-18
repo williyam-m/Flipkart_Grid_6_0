@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 from .models import *
 import tensorflow as tf
@@ -70,3 +70,15 @@ def freshness_detector(request):
 def history(request):
     predictions = FreshnessPrediction.objects.all().order_by('-uploaded_at')
     return render(request, 'freshness_detector_history.html', {'predictions': predictions})
+
+
+def delete(request, pk):
+    prediction = FreshnessPrediction.objects.get(id=pk)
+
+    if prediction.image and len(prediction.image) > 0:
+        if os.path.exists(prediction.image.path):
+            os.remove(prediction.image.path)
+
+    prediction.delete()
+
+    return redirect('freshness_detector_history')

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 from .models import *
 from OCR.views import *
@@ -138,3 +138,16 @@ def feature_extractor(request):
 def history(request):
     feature_extracts = FeatureExtract.objects.all().order_by('-uploaded_at')
     return render(request, 'feature_extractor_history.html', {'feature_extracts': feature_extracts})
+
+
+
+def delete(request, pk):
+    feature_extract = FeatureExtract.objects.get(id=pk)
+
+    if feature_extract.image and len(feature_extract.image) > 0:
+        if os.path.exists(feature_extract.image.path):
+            os.remove(feature_extract.image.path)
+
+    feature_extract.delete()
+
+    return redirect('feature_extractor_history')
