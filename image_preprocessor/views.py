@@ -5,7 +5,7 @@ from django.conf import settings
 import os
 
 def preprocess_image(image_path):
-    # read the image
+
     image = cv2.imread(image_path)
 
     # Normalize the image (adjust brightness and contrast)
@@ -23,3 +23,12 @@ def preprocess_image(image_path):
     _, binary_image = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     return binary_image
+
+
+
+def load_image(image_path):
+    img = cv2.imread(image_path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img_resized = cv2.resize(img, (512, 512))
+
+    return img, img_resized
