@@ -1,13 +1,73 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Vision</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard-style.css' %}">
 </head>
 <body>
-<a href="/">home</a>
-<a href="/fresh_detect/">Fresh Detect</a>
-<a href="/feat_extract/">Feat Extract</a>
-<a href="/object_detect/">Object Detect</a>
+    <header class="header">
+        <div class="header-left">
+            <h1>Smart Vision</h1>
+        </div>
+        <div class="header-right">
+            {% if request.user.is_anonymous %}
+            <a href="{% url 'signin' %}" class="logout-button">Signin</a>
+            {% else %}
+            <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+            {% endif %}
+        </div>
+    </header>
+    <div class="container">
+        <div align="center"><h3>Smart Vision</h3></div>
+        <div class="link-boxes">
+            <div>
+                <div>
+                 <a href="/fresh_detect/" class="link-box">Use our state-of-the-art image analysis tools to assess the real-time freshness of fruits and vegetables.
+                    <span>Freshness Detector<span class="arrow">&rarr;</span></span>
+                </a>
+            </div>
+                <div>
+                <a href="/object_detect/" class="link-box">Simplify your inventory management with precise and efficient product counting.
+                    <span>Object Detector<span class="arrow">&rarr;</span></span>
+                </a>
+            </div>
+            <div>
+                <a href="/feat_extract/" class="link-box">Extract all essential details from product labels, including EAN, MRP, manufacturing date, and expiry date. Ensure your products are up-to-date and safe for use with our automated expiry verification.
+                    <span>Feature Extractor<span class="arrow">&rarr;</span></span>
+                </a>
+            </div><br><br><br>
+            </div>
+
+            <div align="center">
+            <h3>Revolutionize your inventory and quality control with advanced AI technologies</h3>
+            </div><br>
+            <div class="row">
+                <span class="link-box small">
+                    <img src="{% static 'images/robot.jpg' %}" alt="Chat">
+                </span>
+                <span class="row-text"><br>
+                    <span><b>Why Choose Smart Vision?</b><br><br>
+                        <p class="medium-text">Transform your product management with advanced AI technologies. From extracting and verifying product details to accurate counting and real-time freshness detection, ensure quality and efficiency every step of the way.</p>
+                         <b class="small-text"> > Extract and Verify Product Details</b><br>
+                         <b class="small-text"> > Accurate Product Counting</b><br>
+                         <b class="small-text"> > Real-Time Freshness Detection</b><br>
+                </span>
+                </span>
+                </div>
+        </div>
+    </div>
+<footer class="footer">
+    <div align="center">
+        <a href="https://github.com/williyam-m/Flipkart_Grid_6_0" target="_blank">
+            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" style="width: 25px; height: 25px; vertical-align: middle; margin-right: 5px; border-radius:50%;">
+            View Codebase on GitHub
+        </a><br><br>
+        Smart Vision<br>
+        © 2024 Smart Vision. All rights reserved.
+    </div>
+</footer>
 </body>
 </html>
