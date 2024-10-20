@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 import os
 from .models import *
 from image_preprocessor.views import *
@@ -16,7 +17,6 @@ detector = hub.load(model_url)
 
 
 
-# Function to count objects in an image
 def count_objects(image_path, confidence_threshold=0.5):
 
     original_image, input_image = load_image(image_path)
@@ -51,7 +51,9 @@ def count_objects(image_path, confidence_threshold=0.5):
 
     return object_count
 
-# Example usage
+
+
+@login_required(login_url='signin')
 def object_detection(request):
 
     if request.method == 'POST' and request.FILES.get('image'):
@@ -84,6 +86,7 @@ def object_detection(request):
 
 
 
+@login_required(login_url='signin')
 def history(request):
 
     object_detections = ObjectDetect.objects.all().order_by('-uploaded_at')
@@ -91,6 +94,8 @@ def history(request):
 
 
 
+
+@login_required(login_url='signin')
 def delete(request, pk):
     object_detect = ObjectDetect.objects.get(id=pk)
 

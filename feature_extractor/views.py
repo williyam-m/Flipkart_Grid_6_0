@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from .models import *
 from OCR.views import *
 from image_preprocessor.views import *
@@ -90,6 +91,7 @@ class ProductInfoExtractor:
 
 
 
+@login_required(login_url='signin')
 def feature_extractor(request):
     if request.method == 'POST' and request.FILES.get('image'):
         uploaded_image = request.FILES['image']
@@ -135,12 +137,14 @@ def feature_extractor(request):
 
 
 
+@login_required(login_url='signin')
 def history(request):
+
     feature_extracts = FeatureExtract.objects.all().order_by('-uploaded_at')
     return render(request, 'feature_extractor_history.html', {'feature_extracts': feature_extracts})
 
 
-
+@login_required(login_url='signin')
 def delete(request, pk):
     feature_extract = FeatureExtract.objects.get(id=pk)
 

@@ -8,9 +8,9 @@ class FeatureExtract(models.Model):
     MRP = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True)
     manufactured_date = models.DateField(blank=True, null=True)
     expiry_date = models.DateField(blank=True, null=True)
-    is_valid = models.BooleanField(default=False)
+    is_valid = models.BooleanField(default=False, blank=True, null=True)
     text = models.TextField(blank=True, null=True)
-    image_uploaded = models.BooleanField(default=False)
+    image_uploaded = models.BooleanField(default=False, blank=True, null=True)
     uploaded_image_name = models.CharField(max_length=255, blank=True, null=True)
 
     uploaded_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)

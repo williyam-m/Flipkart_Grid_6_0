@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from .models import *
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
@@ -14,6 +15,8 @@ all_classes = ['FreshApple', 'RottenApple', 'FreshBanana', 'RottenBanana', 'Fres
 
 model_path = os.path.join(settings.BASE_DIR, 'freshness_detector', 'model', 'fruit_veg_freshness_model.h5')
 model = tf.keras.models.load_model(model_path)
+
+
 
 
 def predict_image(image_path):
@@ -35,6 +38,8 @@ def predict_image(image_path):
     return predicted_class, confidence_score, time_taken
 
 
+
+@login_required(login_url='signin')
 def freshness_detector(request):
     if request.method == 'POST' and request.FILES.get('image'):
         uploaded_image = request.FILES['image']
@@ -67,11 +72,16 @@ def freshness_detector(request):
     return render(request, 'freshness_detector.html')
 
 
+
+@login_required(login_url='signin')
 def history(request):
+
     predictions = FreshnessPrediction.objects.all().order_by('-uploaded_at')
     return render(request, 'freshness_detector_history.html', {'predictions': predictions})
 
 
+
+@login_required(login_url='signin')
 def delete(request, pk):
     prediction = FreshnessPrediction.objects.get(id=pk)
 
