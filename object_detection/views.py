@@ -98,10 +98,12 @@ def history(request):
 @login_required(login_url='signin')
 def delete(request, pk):
     object_detect = ObjectDetect.objects.get(id=pk)
-
-    if object_detect.image and len(object_detect.image) > 0:
-        if os.path.exists(object_detect.image.path):
-            os.remove(object_detect.image.path)
+    try:
+        if object_detect.image and len(object_detect.image) > 0:
+            if os.path.exists(object_detect.image.path):
+                os.remove(object_detect.image.path)
+    except Exception as e:
+        pass
 
     object_detect.delete()
 

@@ -84,10 +84,12 @@ def history(request):
 @login_required(login_url='signin')
 def delete(request, pk):
     prediction = FreshnessPrediction.objects.get(id=pk)
-
-    if prediction.image and len(prediction.image) > 0:
-        if os.path.exists(prediction.image.path):
-            os.remove(prediction.image.path)
+    try:
+        if prediction.image and len(prediction.image) > 0:
+            if os.path.exists(prediction.image.path):
+                os.remove(prediction.image.path)
+    except Exception as e:
+        pass
 
     prediction.delete()
 

@@ -148,9 +148,12 @@ def history(request):
 def delete(request, pk):
     feature_extract = FeatureExtract.objects.get(id=pk)
 
-    if feature_extract.image and len(feature_extract.image) > 0:
-        if os.path.exists(feature_extract.image.path):
-            os.remove(feature_extract.image.path)
+    try:
+        if feature_extract.image and len(feature_extract.image) > 0:
+            if os.path.exists(feature_extract.image.path):
+                os.remove(feature_extract.image.path)
+    except Exception as e:
+        pass
 
     feature_extract.delete()
 
