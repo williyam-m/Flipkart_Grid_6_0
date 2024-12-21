@@ -11,7 +11,7 @@ import numpy as np
 
 
 # Load the EfficientDet model from TensorFlow Hub
-model_url = "https://tfhub.dev/tensorflow/efficientdet/d0/1"
+model_url = "https://www.kaggle.com/models/tensorflow/efficientdet/tensorFlow2/d0/1"
 detector = hub.load(model_url)
 
 
